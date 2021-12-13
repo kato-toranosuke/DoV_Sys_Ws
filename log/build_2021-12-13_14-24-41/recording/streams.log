@@ -1,0 +1,37 @@
+[0.204s] Invoking command in '/home/toranosuke/dov_sys_ws/src/recording': PYTHONPATH=/home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/recording build --build-base /home/toranosuke/dov_sys_ws/build/recording/build install --prefix /home/toranosuke/dov_sys_ws/install/recording --record /home/toranosuke/dov_sys_ws/build/recording/install.log --single-version-externally-managed
+[0.392s] running egg_info
+[0.393s] creating ../../build/recording/recording.egg-info
+[0.393s] writing ../../build/recording/recording.egg-info/PKG-INFO
+[0.393s] writing dependency_links to ../../build/recording/recording.egg-info/dependency_links.txt
+[0.394s] writing entry points to ../../build/recording/recording.egg-info/entry_points.txt
+[0.394s] writing requirements to ../../build/recording/recording.egg-info/requires.txt
+[0.394s] writing top-level names to ../../build/recording/recording.egg-info/top_level.txt
+[0.399s] writing manifest file '../../build/recording/recording.egg-info/SOURCES.txt'
+[0.441s] reading manifest file '../../build/recording/recording.egg-info/SOURCES.txt'
+[0.441s] writing manifest file '../../build/recording/recording.egg-info/SOURCES.txt'
+[0.442s] running build
+[0.442s] running build_py
+[0.442s] creating /home/toranosuke/dov_sys_ws/build/recording/build
+[0.442s] creating /home/toranosuke/dov_sys_ws/build/recording/build/lib
+[0.442s] creating /home/toranosuke/dov_sys_ws/build/recording/build/lib/recording
+[0.442s] copying recording/__init__.py -> /home/toranosuke/dov_sys_ws/build/recording/build/lib/recording
+[0.442s] copying recording/recording.py -> /home/toranosuke/dov_sys_ws/build/recording/build/lib/recording
+[0.442s] running install
+[0.444s] running install_lib
+[0.445s] creating /home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages/recording
+[0.445s] copying /home/toranosuke/dov_sys_ws/build/recording/build/lib/recording/__init__.py -> /home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages/recording
+[0.445s] copying /home/toranosuke/dov_sys_ws/build/recording/build/lib/recording/recording.py -> /home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages/recording
+[0.446s] byte-compiling /home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages/recording/__init__.py to __init__.cpython-38.pyc
+[0.447s] byte-compiling /home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages/recording/recording.py to recording.cpython-38.pyc
+[0.447s] running install_data
+[0.448s] creating /home/toranosuke/dov_sys_ws/install/recording/share/ament_index
+[0.448s] creating /home/toranosuke/dov_sys_ws/install/recording/share/ament_index/resource_index
+[0.448s] creating /home/toranosuke/dov_sys_ws/install/recording/share/ament_index/resource_index/packages
+[0.448s] copying resource/recording -> /home/toranosuke/dov_sys_ws/install/recording/share/ament_index/resource_index/packages
+[0.448s] copying package.xml -> /home/toranosuke/dov_sys_ws/install/recording/share/recording
+[0.448s] running install_egg_info
+[0.450s] Copying ../../build/recording/recording.egg-info to /home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages/recording-0.0.0-py3.8.egg-info
+[0.451s] running install_scripts
+[0.469s] Installing recording script to /home/toranosuke/dov_sys_ws/install/recording/lib/recording
+[0.470s] writing list of installed files to '/home/toranosuke/dov_sys_ws/build/recording/install.log'
+[0.485s] Invoked command in '/home/toranosuke/dov_sys_ws/src/recording' returned '0': PYTHONPATH=/home/toranosuke/dov_sys_ws/install/recording/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/recording build --build-base /home/toranosuke/dov_sys_ws/build/recording/build install --prefix /home/toranosuke/dov_sys_ws/install/recording --record /home/toranosuke/dov_sys_ws/build/recording/install.log --single-version-externally-managed
