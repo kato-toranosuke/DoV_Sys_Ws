@@ -1,11 +1,12 @@
 from setuptools import setup
 
 package_name = 'recording'
+submodules = 'recording/mylib'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name],
+    packages=[package_name, submodules],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -23,7 +24,7 @@ setup(
             'recording = recording.recording:main',
             'get_index = recording.get_index:main',
             'sub_recording = recording.sub_recording:main',
-            'sub_test_recording = recording.sub_test_recording:main'
+            'sub_test_recording = recording.sub_test_recording:main',
         ],
     },
     py_modules=['recording.get_index', 'recording.recording',
