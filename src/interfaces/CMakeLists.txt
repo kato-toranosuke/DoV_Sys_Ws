@@ -37,7 +37,8 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/RecordWav.srv"
+  "srv/CalcFeatureVals.srv"
   "srv/CalcProba.srv"
  )
- 
+
 ament_package()
