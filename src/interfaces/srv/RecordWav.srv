@@ -1,0 +1,7 @@
+bool flag
+int8 index
+uint16 sampling_rate
+float32 recording_sec
+uint16 chunk_size
+---
+string file_path
