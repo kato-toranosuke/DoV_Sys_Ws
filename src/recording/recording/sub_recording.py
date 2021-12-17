@@ -9,9 +9,9 @@ from std_msgs.msg import String
 
 # for recording
 # from mylib.usb_4_mic_array.tuning import Tuning
-from mylib.load_constants import Rec_Consts
-from mylib import output_wav
-from mylib import rec_audio
+from .mylib import output_wav
+from .mylib import rec_audio
+from .mylib.load_constants import Rec_Consts
 
 class RecordingSubscriber(Node):
 
@@ -26,7 +26,7 @@ class RecordingSubscriber(Node):
 
         # for recording
         self.consts = Rec_Consts(
-            index=0, output_path="../out/", recording_sec=2.0, rate=48000, chunk=2048)
+            index=0, output_path="../out/", record_sec=2.0, rate=48000, chunk=2048)
 
     def listener_callback(self, msg):
         self.get_logger().info('I heard: "%s"' % msg.data)
