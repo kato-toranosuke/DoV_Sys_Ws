@@ -9,9 +9,9 @@ from std_msgs.msg import String
 
 # for recording
 # from mylib.usb_4_mic_array.tuning import Tuning
-from .mylib import output_wav
-from .mylib import rec_audio
-from .mylib.load_constants import Rec_Consts
+from .lib_rec import output_wav
+from .lib_rec import rec_audio
+from .lib_rec.load_constants import Rec_Consts
 
 class RecordingSubscriber(Node):
 

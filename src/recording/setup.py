@@ -1,12 +1,12 @@
 from setuptools import setup
 
 package_name = 'recording'
-submodules = 'recording/mylib'
+lib_package_name = 'recording/lib_rec'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name, submodules],
+    packages=[package_name, lib_package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
