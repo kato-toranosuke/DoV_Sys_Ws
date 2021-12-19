@@ -1,3 +1,4 @@
 float64[] feature_vals
 ---
 float64 proba
+uint8 predicted_class
