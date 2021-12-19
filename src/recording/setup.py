@@ -21,12 +21,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'recording = recording.recording:main',
             'get_index = recording.get_index:main',
             'sub_recording = recording.sub_recording:main',
             'sub_test_recording = recording.sub_test_recording:main',
         ],
     },
-    py_modules=['recording.get_index', 'recording.recording',
-                'recording.sub_recording', 'recording.sub_test_recording']
+    py_modules=['recording.get_index', 'recording.sub_recording',
+                'recording.sub_test_recording']
 )
