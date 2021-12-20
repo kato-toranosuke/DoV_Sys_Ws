@@ -45,11 +45,17 @@ class ClacFeaturesService(Node):
         row: list
             1行分のデータ
         '''
+        # 定数
+        N = 2**12
+        w = 1
+        overlap = 80
+        gp_tdoa_mic_channels = range(1, 5)
+
         ##########################
         ### GCC-PHAT & TDOA以外 ###
         ##########################
         # 指定したfile_pathに該当するwavがない場合、スキップする
-        wav_0ch_file_path = dir_path + '/' + file_name + '_0.wav'
+        wav_0ch_file_path = request.file_dir_path + '/' + request.file_name + '_0.wav'
         if not os.path.isfile(wav_0ch_file_path):
             raise FileNotFoundError(wav_0ch_file_path + ' is not found!')
 
@@ -71,8 +77,8 @@ class ClacFeaturesService(Node):
         # channel1~4の音声データを読み込む
         voice_data = []
         for ch in gp_tdoa_mic_channels:
-            fname = file_name + '_' + str(ch) + '.wav'
-            fpath = dir_path + '/' + fname
+            fname = request.file_name + '_' + str(ch) + '.wav'
+            fpath = request.file_dir_path + '/' + fname
             v_, fs_ = cis.wavread(fpath)
             voice_data.append([v_, fs_])
 

@@ -4,50 +4,28 @@
 # for ROS2
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Bool
 
-from std_msgs.msg import String
-
-# for recording
-import pyaudio
-import numpy as np
-
-# constants
-RESPEAKER_RATE = 48000
-# change base on firmwares, default_firmware.bin as 1 or 6_firmware.bin as 6
-RESPEAKER_CHANNELS = 6
-RESPEAKER_WIDTH = 2
-# run getDeviceInfo.py to get index
-RESPEAKER_INDEX = 0  # refer to input device id
-CHUNK = 1024 * 2
-RECORD_SECONDS = 2
-OUTPUT_PATH = "../out/"
+from .lib_rec import rec_audio
+from .lib_rec import load_constants
 
 class RecordingSubscriber(Node):
 
     def __init__(self):
         super().__init__('recording_subscriber')
         self.subscription = self.create_subscription(
-            String,
-            'topic',
-            self.listener_callback,
+            Bool,
+            'control_rec_topic',
+            self.rec_cb,
             10)
         self.subscription  # prevent unused variable warning
+        self.consts = load_constants.Rec_Consts(
+            rate=48000, channels=6, width=2, index=2, chunk=1024 * 2, record_sec=2.0, output_path='../../out')
 
-        # for recording
-        self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(
-            format=self.p.get_format_from_width(RESPEAKER_WIDTH),
-            # format=pyaudio.paInt16,
-            rate=RESPEAKER_RATE,
-            channels=RESPEAKER_CHANNELS,
-            input=True,
-            output=False,
-            input_device_index=RESPEAKER_INDEX)
-
-    def listener_callback(self, msg):
+    def rec_cb(self, msg):
         self.get_logger().info('I heard: "%s"' % msg.data)
-        if msg.data == 1:
-            self.recording()
+        if msg.data == True:
+            rec_audio.recording(self.consts)
 
 
 def main(args=None):

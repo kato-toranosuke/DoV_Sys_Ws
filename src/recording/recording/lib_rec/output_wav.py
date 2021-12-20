@@ -11,6 +11,15 @@ import sys
 from .load_constants import Rec_Consts
 
 
+def getDirnameInTimeFormat():
+    # 確実にJST時刻になるようにする
+    dt_now_jst = datetime.datetime.now(
+        datetime.timezone(datetime.timedelta(hours=9))
+    )
+
+    dir_name = dt_now_jst.strftime('%Y-%m-%d_%H-%M-%S')
+    return dir_name
+
 def getDirname(output_path) -> str:
     # 現在日時
     d_today = datetime.date.today().isoformat()
@@ -116,7 +125,7 @@ def setupOutputEnv(consts: Rec_Consts, participant, utterance, session, room, de
 
     return part_of_output_file_path
 
-def outputWaveFiles(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio, part_of_output_file_path: str):
+def outputWaveFiles(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio):
     '''
     同一ディレクトリにチャンネル毎のwavファイルを出力する。
 
@@ -127,15 +136,12 @@ def outputWaveFiles(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio, part_o
     output_path: str
 
     '''
-    # # 音声ファイルを格納するディレクトリの名前を取得
-    # dir_name = getDirname(consts.OUTPUT_PATH)
-    # # ディレクトリを作成
-    # output_dir_path = consts.OUTPUT_PATH + dir_name
-    # os.mkdir(output_dir_path)
+    # ディレクトリを作成
+    output_dir_path = consts.OUTPUT_PATH + '/' + getDirnameInTimeFormat()
+    os.mkdir(output_dir_path)
 
     for i in range(consts.RESPEAKER_CHANNELS):
-        # filename = f"ch{i}.wav"
-        output_file_path = part_of_output_file_path + str(i) + '.wav'
+        output_file_path = output_dir_path + '/rec_' + str(i) + '.wav'
         outputWaveFile(
             output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE)
 

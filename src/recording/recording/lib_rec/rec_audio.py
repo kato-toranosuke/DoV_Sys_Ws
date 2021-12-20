@@ -6,7 +6,7 @@ import numpy as np
 from .load_constants import Rec_Consts
 from .output_wav import outputWaveFiles
 
-def recording(consts: Rec_Consts, part_of_output_file_path: str = None) -> None:
+def recording(consts: Rec_Consts) -> None:
     '''
     単純なレコーディングを行う関数
 
@@ -17,8 +17,6 @@ def recording(consts: Rec_Consts, part_of_output_file_path: str = None) -> None:
     part_of_output_file_path: str, default = None
         channelの表記を除いたファイルのパス。
     '''
-    if part_of_output_file_path is None:
-        part_of_output_file_path = consts.OUTPUT_PATH + '/'
     try:
         p = pyaudio.PyAudio()
 
@@ -51,10 +49,10 @@ def recording(consts: Rec_Consts, part_of_output_file_path: str = None) -> None:
         stream.close()
         p.terminate()
     except:
-        print(f'Failed to record audio.: {part_of_output_file_path}')
+        print(f'Failed to record audio.')
     else:
         # wavファイルに出力
-        outputWaveFiles(consts, frames, p, part_of_output_file_path)
+        outputWaveFiles(consts, frames, p)
 
 
 if __name__ == "__main__":
