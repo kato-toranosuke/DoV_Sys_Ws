@@ -20,11 +20,11 @@ class RecordingSubscriber(Node):
             10)
         self.subscription  # prevent unused variable warning
         self.consts = load_constants.Rec_Consts(
-            rate=48000, channels=6, width=2, index=0, chunk=1024 * 3, record_sec=2.0, output_path='/home/ubuntu/DoV_Sys_Ws/out')
+            rate=48000, channels=6, width=2, index=0, chunk=1024 * 3, record_sec=2.0, output_path='/home/toranosuke/dov_sys_ws/out')
 
     def rec_cb(self, msg):
-        # self.get_logger().info('I heard: flag = %s, distance = %d, angle = %d, trial = %d, date = %s' %
-        #                        (msg.flag, msg.distance, msg.angle, msg.trial, msg.date))
+        self.get_logger().info('I heard: flag = %s, distance = %d, angle = %d, trial = %d, date = %s' %
+                               (msg.flag, msg.distance, msg.angle, msg.trial, msg.date))
         if msg.flag == True:
             rec_audio.recording(self.consts, distance=msg.distance,
                                 angle=msg.angle, trial=msg.trial, date=msg.date)
