@@ -37,6 +37,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/SimpleControlRec.msg"
+  "msg/SetMicParam.msg"
   "srv/RecordWav.srv"
   "srv/CalcFeatureVals.srv"
   "srv/CalcProba.srv"
