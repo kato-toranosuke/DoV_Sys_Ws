@@ -222,6 +222,7 @@ cython_debug/
 ### ROS2 ###
 install/
 log/
+out/
 
 # Ignore generated docs
 *.dox
