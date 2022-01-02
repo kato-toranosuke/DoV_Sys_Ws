@@ -23,13 +23,13 @@ setup(
     entry_points={
         'console_scripts': [
             'get_index = recording.get_index:main',
-            'sub_recording = recording.sub_recording:main',
+            'srv_recording = recording.srv_recording:main',
             'sub_test_recording = recording.sub_test_recording:main',
             'sub_test_recording_for_vmware = recording.sub_test_recording_for_vmware:main',
             'sub_set_mic_param = recording.sub_set_mic_param',
         ],
     },
     # フォルダ構成の定義（setup.pyのあるディレクトリを起点とした相対位置を指定）
-    py_modules=['recording.get_index', 'recording.sub_recording',
+    py_modules=['recording.get_index', 'recording.srv_recording',
                 'recording.sub_test_recording', 'recording.sub_test_recording_for_vmware', 'recording.sub_set_mic_param']
 )

@@ -146,6 +146,31 @@ def outputWaveFilesForTest(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio,
         outputWaveFile(
             output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE)
 
+def outputWaveFilesForService(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio, dirname: str) -> str:
+    '''
+    同一ディレクトリにチャンネル毎のwavファイルを出力する。
+
+    Parameters
+    ----------
+    nch: int
+            チャンネル数
+    output_path: str
+
+    '''
+    try:
+        # ディレクトリを作成
+        output_dir_path = consts.OUTPUT_PATH + '/' + dirname
+        os.makedirs(output_dir_path, exist_ok=True)
+
+        for i in range(consts.RESPEAKER_CHANNELS):
+            output_file_path = output_dir_path + '/rec_' + str(i) + '.wav'
+            outputWaveFile(
+                output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE)
+        return output_dir_path
+    except:
+        raise Exception('Failed to save wav files.')
+
+
 def outputWaveFiles(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio):
     '''
     同一ディレクトリにチャンネル毎のwavファイルを出力する。
@@ -187,7 +212,7 @@ def outputWaveFile(file_path: str, frame: List, p: pyaudio.PyAudio, width: int, 
         wf.setframerate(fs)
         wf.writeframes(b''.join(frame))
     except:
-        print(f'Failed to write audio file.: {file_path}', file=sys.stderr)
+        raise Exception(f'Failed to write audio file.: {file_path}')
     else:
         print(f'Success to write audio file.: {file_path}')
     finally:

@@ -1,7 +1,8 @@
-bool flag
+string dirname
 int8 index 0
 uint16 sampling_rate 48000
 float32 recording_sec 2.0
-uint16 chunk_size 2048
+uint16 chunk_size 3072
 ---
 string file_path
+bool success

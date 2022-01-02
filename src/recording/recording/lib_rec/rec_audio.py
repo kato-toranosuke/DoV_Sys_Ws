@@ -4,9 +4,9 @@
 import pyaudio
 import numpy as np
 from .load_constants import Rec_Consts
-from .output_wav import outputWaveFiles, outputWaveFilesForTest
+from .output_wav import outputWaveFiles, outputWaveFilesForTest, outputWaveFilesForService
 
-def recording(consts: Rec_Consts, **kwargs) -> None:
+def recording(consts: Rec_Consts, **kwargs) -> str:
     '''
     単純なレコーディングを行う関数
 
@@ -48,12 +48,13 @@ def recording(consts: Rec_Consts, **kwargs) -> None:
         stream.stop_stream()
         stream.close()
         p.terminate()
-    except:
-        print(f'Failed to record audio.')
-    else:
+
         # wavファイルに出力
-        outputWaveFilesForTest(
-            consts, frames, p, kwargs['distance'], kwargs['angle'], kwargs['trial'], kwargs['date'])
+        file_path = outputWaveFilesForService(
+            consts, frames, p, kwargs['dirname'])
+        return file_path
+    except:
+        raise Exception('Failed to record audio.')
 
 
 if __name__ == "__main__":
