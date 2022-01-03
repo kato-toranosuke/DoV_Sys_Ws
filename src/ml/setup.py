@@ -21,8 +21,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'calc_features = ml.calc_features:main',
-            'pred = ml.pred:main'
+            'srv_calc_features = ml.srv_calc_features:main',
+            'srv_pred = ml.srv_pred:main'
         ],
     },
 )
