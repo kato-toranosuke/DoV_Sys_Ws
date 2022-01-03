@@ -22,7 +22,7 @@ setup(
     entry_points={
         'console_scripts': [
             'srv_calc_features = ml.srv_calc_features:main',
-            'srv_pred = ml.srv_pred:main'
+            'srv_dov_pred = ml.srv_dov_pred:main'
         ],
     },
 )

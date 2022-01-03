@@ -134,9 +134,9 @@ class ClacFeaturesService(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    calc_features_service = ClacFeaturesService()
+    service = ClacFeaturesService()
 
-    rclpy.spin(calc_features_service)
+    rclpy.spin(service)
 
     rclpy.shutdown()
 

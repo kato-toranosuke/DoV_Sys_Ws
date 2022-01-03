@@ -1,4 +1,6 @@
+string pkl_filepath
 float64[] feature_vals
 ---
+bool success
 float64 proba
 uint8 predicted_class

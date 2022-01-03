@@ -11,6 +11,7 @@
 // client
 #include "interfaces/srv/record_wav.hpp"
 #include "interfaces/srv/calc_feature_vals.hpp"
+#include "interfaces/srv/calc_proba.hpp"
 
 // subscriber
 using std::placeholders::_1;
@@ -85,7 +86,7 @@ private:
 
     void calc_features_cb(const std::shared_ptr<interfaces::srv::RecordWav::Response> response) const
     {
-        const std::string client_name = std::string("calc_feature_vals_client_") + std::string(ROBOT_ID);
+        const std::string client_name = std::string("calc_features_client_") + std::string(ROBOT_ID);
         std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
         const std::string service_name = std::string("calc_feature_vals_srv_") + std::string(ROBOT_ID);
         rclcpp::Client<interfaces::srv::CalcFeatureVals>::SharedPtr client = node->create_client<interfaces::srv::CalcFeatureVals>(service_name);
@@ -107,7 +108,45 @@ private:
         // Wait for the result.
         if (rclcpp::spin_until_future_complete(node, result) == rclcpp::FutureReturnCode::SUCCESS)
         {
-            return;
+            if (result.get()->success == true)
+            {
+                this->predict_cb(result.get());
+            }
+        }
+        else
+        {
+            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service calc_feature_vals");
+        }
+    }
+
+    void predict_cb(const std::shared_ptr<interfaces::srv::CalcFeatureVals::Response> response) const
+    {
+        const std::string client_name = std::string("pred_client_") + std::string(ROBOT_ID);
+        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
+        const std::string service_name = std::string("calc_proba_srv_") + std::string(ROBOT_ID);
+        rclcpp::Client<interfaces::srv::CalcProba>::SharedPtr client = node->create_client<interfaces::srv::CalcProba>(service_name);
+
+        auto request = std::make_shared<interfaces::srv::CalcProba::Request>();
+        request->feature_vals = response->feature_vals;
+
+        while (!client->wait_for_service(1s))
+        {
+            if (!rclcpp::ok())
+            {
+                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+                return;
+            }
+            RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+        }
+
+        auto result = client->async_send_request(request);
+        // Wait for the result.
+        if (rclcpp::spin_until_future_complete(node, result) == rclcpp::FutureReturnCode::SUCCESS)
+        {
+            if (result.get()->success == true)
+            {
+                return;
+            }
         }
         else
         {
