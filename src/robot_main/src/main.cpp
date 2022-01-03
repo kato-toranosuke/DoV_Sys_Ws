@@ -10,6 +10,7 @@
 #include "std_msgs/msg/bool.hpp"
 // client
 #include "interfaces/srv/record_wav.hpp"
+#include "interfaces/srv/calc_feature_vals.hpp"
 
 // subscriber
 using std::placeholders::_1;
@@ -28,15 +29,20 @@ public:
     }
 
 private:
+    const char *ROBOT_ID = std::getenv("ROBOT_ID");
     mutable int file_no = 0;
+    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr start_rec_sub;
+
     void rec_cb(const std_msgs::msg::Bool::SharedPtr msg) const
     {
         if (msg->data == true)
         {
             RCLCPP_INFO(this->get_logger(), "I heard: True");
 
-            std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("record_wav_client");
-            rclcpp::Client<interfaces::srv::RecordWav>::SharedPtr client = node->create_client<interfaces::srv::RecordWav>("record_wav");
+            const std::string client_name = std::string("record_wav_client_") + std::string(ROBOT_ID);
+            std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
+            const std::string service_name = std::string("record_wav_srv_") + std::string(ROBOT_ID);
+            rclcpp::Client<interfaces::srv::RecordWav>::SharedPtr client = node->create_client<interfaces::srv::RecordWav>(service_name);
 
             auto request = std::make_shared<interfaces::srv::RecordWav::Request>();
             // define dirname(date)
@@ -65,6 +71,10 @@ private:
             {
                 file_path = result.get()->file_path;
                 RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "File path: %s", file_path);
+                if (result.get()->success == true)
+                {
+                    this->calc_features_cb(result.get());
+                }
             }
             else
             {
@@ -72,7 +82,38 @@ private:
             }
         }
     }
-    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr start_rec_sub;
+
+    void calc_features_cb(const std::shared_ptr<interfaces::srv::RecordWav::Response> response) const
+    {
+        const std::string client_name = std::string("calc_feature_vals_client_") + std::string(ROBOT_ID);
+        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
+        const std::string service_name = std::string("calc_feature_vals_srv_") + std::string(ROBOT_ID);
+        rclcpp::Client<interfaces::srv::CalcFeatureVals>::SharedPtr client = node->create_client<interfaces::srv::CalcFeatureVals>(service_name);
+
+        auto request = std::make_shared<interfaces::srv::CalcFeatureVals::Request>();
+        request->file_dir_path = response->file_path;
+
+        while (!client->wait_for_service(1s))
+        {
+            if (!rclcpp::ok())
+            {
+                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+                return;
+            }
+            RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+        }
+
+        auto result = client->async_send_request(request);
+        // Wait for the result.
+        if (rclcpp::spin_until_future_complete(node, result) == rclcpp::FutureReturnCode::SUCCESS)
+        {
+            return;
+        }
+        else
+        {
+            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service record_wav");
+        }
+    }
 };
 
 int main(int argc, char *argv[])
