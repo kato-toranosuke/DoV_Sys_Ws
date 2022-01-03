@@ -1,6 +1,6 @@
 string file_dir_path
 string file_name 'rec'
-uint16 N 4096
+uint16 n 4096
 uint8 w 1
 uint8 overlap 80
 uint8[4] gp_tdoa_mic_channels [1,2,3,4]

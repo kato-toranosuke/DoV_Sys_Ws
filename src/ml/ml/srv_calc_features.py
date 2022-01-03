@@ -50,7 +50,7 @@ class ClacFeaturesService(Node):
         '''
         try:
             # 定数
-            N = request.N
+            N = request.n
             w = request.w
             overlap = request.overlap
             gp_tdoa_mic_channels = request.gp_tdoa_mic_channels
