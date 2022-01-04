@@ -15,12 +15,12 @@ from .lib_rec.load_constants import Rec_Consts
 class RecordingService(Node):
 
     def __init__(self):
-        self.robot_id = os.environ['ROBOT_ID']
-        self.node_name = 'recording_service_' + self.robot_id
-        self.service_name = 'record_wav_srv_' + self.robot_id
-        super().__init__(self.node_name)
+        # self.robot_id = os.environ['ROBOT_ID']
+        # self.node_name = 'recording_service_' + self.robot_id
+        # self.service_name = 'record_wav_srv_' + self.robot_id
+        super().__init__('recording_service_node')
         self.srv = self.create_service(
-            RecordWav, self.service_name, self.record_wav_cb)
+            RecordWav, 'record_wav_srv', self.record_wav_cb)
 
     def record_wav_cb(self, request, response):
         self.get_logger().info('Incoming request\ndirname: %s, index: %d, sampling_rate: %d, recording_sec: %f, chunk_size: %d\n\n' %

@@ -16,13 +16,13 @@ from .lib_ml import fetch_features_func as fff
 
 class ClacFeaturesService(Node):
     def __init__(self):
-        self.robot_id = os.environ['ROBOT_ID']
-        self.node_name = 'calc_features_service_' + self.robot_id
-        self.service_name = 'calc_feature_vals_srv_' + self.robot_id
+        # self.robot_id = os.environ['ROBOT_ID']
+        # self.node_name = 'calc_features_service_' + self.robot_id
+        # self.service_name = 'calc_feature_vals_srv_' + self.robot_id
 
-        super().__init__(self.node_name)
+        super().__init__('calc_features_service_node')
         self.srv = self.create_service(
-            CalcFeatureVals, self.service_name, self.calc_features_cb)
+            CalcFeatureVals, 'calc_feature_vals_srv', self.calc_features_cb)
 
     # def calc_features_cb(file_name: str, dir_path: str, gp_tdoa_mic_channels: List, w: int, N: Union[int, str] = 'full', overlap: Union[int, float] = 0.8) -> List:
     def calc_features_cb(self, request, response):

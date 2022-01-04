@@ -26,7 +26,7 @@ setup(
             'srv_recording = recording.srv_recording:main',
             'sub_test_recording = recording.sub_test_recording:main',
             'sub_test_recording_for_vmware = recording.sub_test_recording_for_vmware:main',
-            'sub_set_mic_param = recording.sub_set_mic_param',
+            'sub_set_mic_param = recording.sub_set_mic_param:main',
         ],
     },
     # フォルダ構成の定義（setup.pyのあるディレクトリを起点とした相対位置を指定）
