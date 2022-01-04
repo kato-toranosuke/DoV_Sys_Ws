@@ -22,7 +22,7 @@ class MainRobotController : public rclcpp::Node
 {
 public:
     MainRobotController()
-        : Node("main_robot_controller")
+        : Node("main_robot_controller_node")
     {
         // [PC->Raspi] 録音を開始するtopic
         start_rec_sub = this->create_subscription<std_msgs::msg::Bool>(
@@ -30,7 +30,7 @@ public:
     }
 
 private:
-    const char *ROBOT_ID = std::getenv("ROBOT_ID");
+    // const char *ROBOT_ID = std::getenv("ROBOT_ID");
     mutable int file_no = 0;
     rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr start_rec_sub;
 
@@ -40,10 +40,12 @@ private:
         {
             RCLCPP_INFO(this->get_logger(), "I heard: True");
 
-            const std::string client_name = std::string("record_wav_client_") + std::string(ROBOT_ID);
-            std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
-            const std::string service_name = std::string("record_wav_srv_") + std::string(ROBOT_ID);
-            rclcpp::Client<interfaces::srv::RecordWav>::SharedPtr client = node->create_client<interfaces::srv::RecordWav>(service_name);
+            // const std::string client_name = std::string("record_wav_client_") + std::string(ROBOT_ID);
+            // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
+            std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("record_wav_client");
+            // const std::string service_name = std::string("record_wav_srv_") + std::string(ROBOT_ID);
+            // rclcpp::Client<interfaces::srv::RecordWav>::SharedPtr client = node->create_client<interfaces::srv::RecordWav>(service_name);
+            rclcpp::Client<interfaces::srv::RecordWav>::SharedPtr client = node->create_client<interfaces::srv::RecordWav>("record_wav_srv");
 
             auto request = std::make_shared<interfaces::srv::RecordWav::Request>();
             // define dirname(date)
@@ -86,10 +88,12 @@ private:
 
     void calc_features_cb(const std::shared_ptr<interfaces::srv::RecordWav::Response> response) const
     {
-        const std::string client_name = std::string("calc_features_client_") + std::string(ROBOT_ID);
-        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
-        const std::string service_name = std::string("calc_feature_vals_srv_") + std::string(ROBOT_ID);
-        rclcpp::Client<interfaces::srv::CalcFeatureVals>::SharedPtr client = node->create_client<interfaces::srv::CalcFeatureVals>(service_name);
+        // const std::string client_name = std::string("calc_features_client_") + std::string(ROBOT_ID);
+        // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
+        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("calc_features_client");
+        // const std::string service_name = std::string("calc_feature_vals_srv_") + std::string(ROBOT_ID);
+        // rclcpp::Client<interfaces::srv::CalcFeatureVals>::SharedPtr client = node->create_client<interfaces::srv::CalcFeatureVals>(service_name);
+        rclcpp::Client<interfaces::srv::CalcFeatureVals>::SharedPtr client = node->create_client<interfaces::srv::CalcFeatureVals>("calc_feature_vals_srv");
 
         auto request = std::make_shared<interfaces::srv::CalcFeatureVals::Request>();
         request->file_dir_path = response->file_path;
@@ -121,10 +125,12 @@ private:
 
     void predict_cb(const std::shared_ptr<interfaces::srv::CalcFeatureVals::Response> response) const
     {
-        const std::string client_name = std::string("pred_client_") + std::string(ROBOT_ID);
-        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
-        const std::string service_name = std::string("calc_proba_srv_") + std::string(ROBOT_ID);
-        rclcpp::Client<interfaces::srv::CalcProba>::SharedPtr client = node->create_client<interfaces::srv::CalcProba>(service_name);
+        // const std::string client_name = std::string("pred_client_") + std::string(ROBOT_ID);
+        // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared(client_name);
+        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("pred_client");
+        // const std::string service_name = std::string("calc_proba_srv_") + std::string(ROBOT_ID);
+        // rclcpp::Client<interfaces::srv::CalcProba>::SharedPtr client = node->create_client<interfaces::srv::CalcProba>(service_name);
+        rclcpp::Client<interfaces::srv::CalcProba>::SharedPtr client = node->create_client<interfaces::srv::CalcProba>("calc_proba_srv");
 
         auto request = std::make_shared<interfaces::srv::CalcProba::Request>();
         request->feature_vals = response->feature_vals;
