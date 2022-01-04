@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-import fetch_features_func as fff
-from fft import fft
+from . import fetch_features_func as fff
+from .fft import fft
 from typing import List, Any, Union, Dict
 from srmrpy.srmr import *
 
