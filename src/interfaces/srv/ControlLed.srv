@@ -1,0 +1,6 @@
+float64 proba
+uint8 predicted_class
+uint8 robot_id
+float64 time_stamp 0
+---
+bool selected

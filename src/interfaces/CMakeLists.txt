@@ -38,9 +38,12 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/SimpleControlRec.msg"
   "msg/SetMicParam.msg"
+  "msg/PredictedDovResult.msg"
+  "msg/StartRec.msg"
   "srv/RecordWav.srv"
   "srv/CalcFeatureVals.srv"
   "srv/CalcProba.srv"
+  "srv/ControlLed.srv"
  )
 
 ament_package()
