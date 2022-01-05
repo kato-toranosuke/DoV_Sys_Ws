@@ -20,6 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'sub_election = pc_main.sub_election:main',
+            'pub_start_rec = pc_main.pub_start_rec:main'
         ],
     },
 )
