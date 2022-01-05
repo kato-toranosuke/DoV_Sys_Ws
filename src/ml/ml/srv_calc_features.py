@@ -6,7 +6,6 @@ from rclpy.node import Node
 from interfaces.srv import CalcFeatureVals
 
 import os
-from typing import List, Any, Union, Dict
 import numpy as np
 import itertools
 
