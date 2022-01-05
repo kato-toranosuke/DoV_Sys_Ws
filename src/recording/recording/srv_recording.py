@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+import os
 # for ROS2
 import rclpy
 from rclpy.node import Node
@@ -14,12 +15,12 @@ from .lib_rec.load_constants import Rec_Consts
 class RecordingService(Node):
 
     def __init__(self):
-        # self.robot_id = os.environ['ROBOT_ID']
-        # self.node_name = 'recording_service_' + self.robot_id
-        # self.service_name = 'record_wav_srv_' + self.robot_id
-        super().__init__('recording_service_node')
+        self.prefix = 'robot' + os.environ['ROBOT_ID'] + '_'
+        self.node_name = self.prefix + 'recording_service_node'
+        self.service_name = self.prefix + 'record_wav_srv'
+        super().__init__(self.node_name)
         self.srv = self.create_service(
-            RecordWav, 'record_wav_srv', self.record_wav_cb)
+            RecordWav, self.service_name, self.record_wav_cb)
 
     def record_wav_cb(self, request, response):
         self.get_logger().info('Incoming request\ndirname: %s, index: %d, sampling_rate: %d, recording_sec: %f, chunk_size: %d\n\n' %

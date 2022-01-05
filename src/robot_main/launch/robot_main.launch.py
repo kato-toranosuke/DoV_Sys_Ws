@@ -14,30 +14,32 @@ def generate_launch_description():
             package='robot_main',
             # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='main',
-            # name=['sim', 'sim2']
+            name=['robot', LaunchConfiguration('robot_id'), '_robot_main']
         ),
         Node(
             package='ml',
-            namespace=['robot', LaunchConfiguration('robot_id')],
+            # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='srv_calc_features',
-            # name='sim'
+            name=['robot', LaunchConfiguration(
+                'robot_id'), '_srv_calc_features']
         ),
         Node(
             package='ml',
-            namespace=['robot', LaunchConfiguration('robot_id')],
+            # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='srv_dov_pred',
-            # name='sim'
+            name=['robot', LaunchConfiguration('robot_id'), '_srv_dov_pred']
         ),
         Node(
             package='recording',
-            namespace=['robot', LaunchConfiguration('robot_id')],
+            # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='srv_recording',
-            # name='sim'
+            name=['robot', LaunchConfiguration('robot_id'), '_srv_recording']
         ),
         Node(
             package='recording',
-            namespace=['robot', LaunchConfiguration('robot_id')],
+            # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='sub_set_mic_param',
-            # name='sim'
+            name=['robot', LaunchConfiguration(
+                'robot_id'), '_sub_set_mic_param']
         ),
     ])

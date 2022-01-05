@@ -6,17 +6,18 @@ from rclpy.node import Node
 
 from interfaces.srv import CalcProba
 
+import os
 import joblib
 
 class DovPredictService(Node):
     def __init__(self):
-        # self.robot_id = os.environ['ROBOT_ID']
-        # self.node_name = 'dov_pred_service_' + self.robot_id
-        # self.service_name = 'calc_proba_srv_' + self.robot_id
+        self.prefix = 'robot' + os.environ['ROBOT_ID'] + '_'
+        self.node_name = self.prefix + 'dov_pred_service_node'
+        self.service_name = self.prefix + 'calc_proba_srv'
 
-        super().__init__('dov_pred_service_node')
+        super().__init__(self.node_name)
         self.srv = self.create_service(
-            CalcProba, 'calc_proba_srv', self.dov_predict_cb)
+            CalcProba, self.service_name, self.dov_predict_cb)
 
     def dov_predict_cb(self, request, response):
         try:

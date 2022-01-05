@@ -30,7 +30,7 @@ public:
 
 private:
     const char *ROBOT_ID = std::getenv("ROBOT_ID");
-    const std::string prefix = std::string("robot") + std::string(ROBOT_ID) + std::string("/");
+    const std::string prefix = std::string("robot") + std::string(ROBOT_ID) + std::string("_");
     rclcpp::Subscription<interfaces::msg::StartRec>::SharedPtr start_rec_sub;
 
     void rec_cb(const interfaces::msg::StartRec::SharedPtr msg) const
