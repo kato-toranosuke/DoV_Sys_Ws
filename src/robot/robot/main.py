@@ -25,7 +25,7 @@ class Robot(Node):
     def __init__(self):
         super().__init__('robot_main_node')
         # constants
-        self.consts = Rec_Consts(index=0, output_path="~/Dov_Sys_Ws/out",
+        self.consts = Rec_Consts(index=0, output_path="/home/ubuntu/DoV_Sys_Ws/out",
                                  record_sec=2.0, rate=48000, chunk=1024 * 3)
 
         self.filename_prefix = 'rec'
@@ -52,19 +52,19 @@ class Robot(Node):
         wav_dir_path = self.rec_wav(msg.dir_name)
         # calculate features
         features_array = self.calc_features(wav_dir_path, self.filename_prefix)
-        # predict dov
-        predicted_class, proba = self.dov_predict(
-            features_array, self.pkl_filepath)
+        # # predict dov
+        # predicted_class, proba = self.dov_predict(
+        #     features_array, self.pkl_filepath)
 
-        # publish msg to pc
-        result_msg = PredictedDovResult()
-        result_msg.proba = proba
-        result_msg.predicted_class = predicted_class
-        result_msg.robot_id = self.robot_id
-        result_msg.time_stamp = msg.time_stamp
-        self.publisher_.publish(result_msg)
-        self.get_logger().info(
-            '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
+        # # publish msg to pc
+        # result_msg = PredictedDovResult()
+        # result_msg.proba = proba
+        # result_msg.predicted_class = predicted_class
+        # result_msg.robot_id = self.robot_id
+        # result_msg.time_stamp = msg.time_stamp
+        # self.publisher_.publish(result_msg)
+        # self.get_logger().info(
+        #     '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
 
     def rec_wav(self, dir_name):
         try:
