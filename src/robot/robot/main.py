@@ -43,36 +43,56 @@ class Robot(Node):
         self.subscription = self.create_subscription(
             StartRec,
             'start_rec_topic',
-            self.main_cb,
+            self.test_cb,
             10)
         self.subscription  # prevent unused variable warning
+    
+    def test_cb(self, msg):
+        # publish msg to pc
+        robot_ids = [1,2,3,4,5]
+        probas = [0.6, 0.85, 0.9, 0.85, 0.9]
+        predicted_classes = [0, 0, 0, 1, 1]
+        time_stamp = 1641450318.272768
+
+        for i in range(1, 6):
+            _i = i-1
+            result_msg = PredictedDovResult()
+            result_msg.proba = probas[_i]
+            result_msg.predicted_class = predicted_classes[_i]
+            result_msg.robot_id = robot_ids[_i]
+            result_msg.time_stamp = time_stamp
+            self.publisher_.publish(result_msg)
+            self.get_logger().info(
+                '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
+
 
     def main_cb(self, msg):
         # recording
         wav_dir_path = self.rec_wav(msg.dir_name)
         # calculate features
         features_array = self.calc_features(wav_dir_path, self.filename_prefix)
-        # # predict dov
-        # predicted_class, proba = self.dov_predict(
-        #     features_array, self.pkl_filepath)
+        # predict dov
+        predicted_class, proba = self.dov_predict(
+            features_array, self.pkl_filepath)
 
-        # # publish msg to pc
-        # result_msg = PredictedDovResult()
-        # result_msg.proba = proba
-        # result_msg.predicted_class = predicted_class
-        # result_msg.robot_id = self.robot_id
-        # result_msg.time_stamp = msg.time_stamp
-        # self.publisher_.publish(result_msg)
-        # self.get_logger().info(
-        #     '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
+        # publish msg to pc
+        result_msg = PredictedDovResult()
+        result_msg.proba = proba
+        result_msg.predicted_class = predicted_class
+        result_msg.robot_id = self.robot_id
+        result_msg.time_stamp = msg.time_stamp
+        self.publisher_.publish(result_msg)
+        self.get_logger().info(
+            '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
 
     def rec_wav(self, dir_name):
         try:
             wav_dir_path = rec_audio.recording(self.consts, dirname=dir_name)
         except Exception as e:
             self.get_logger().error(e)
-
-        return wav_dir_path
+        else:
+            self.get_logger().info('Success to record wav files.: %s' % (wav_dir_path))
+            return wav_dir_path
 
     def calc_features(self, wav_dir_path, filename_prefix):
         '''
@@ -185,9 +205,12 @@ class Robot(Node):
             # classの予測
             predicted_class = model.predict(feature_vals)
             proba = model.predict_proba(feature_vals)
-            return predicted_class, proba
         except Exception as e:
             self.get_logger().error(e)
+        else:
+            self.get_logger().info('Success to predict dov.')
+            return predicted_class, proba
+
 
 def main(args=None):
     rclpy.init(args=args)
