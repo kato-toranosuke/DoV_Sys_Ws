@@ -21,7 +21,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'robot_main = robot.main:main'
+            'robot_main = robot.main:main',
+            'control_led = robot.control_led:main'
         ],
     },
 )
