@@ -34,7 +34,7 @@ class Robot(Node):
         self.overlap = 80
         self.gp_tdoa_mic_channels = [1, 2, 3, 4]
 
-        self.pkl_filepath = 'hoge'
+        self.pkl_filepath = '/home/ubuntu/DoV_Sys_Ws/pkl/NoAGC-0angle-under5m_2021-12-27_ExtraTreesClassifier_RandomOverSampler_2021-12-29_no3.sav'
 
         self.robot_id = int(os.environ['ROBOT_ID'])
 
@@ -46,16 +46,16 @@ class Robot(Node):
             self.test_cb,
             10)
         self.subscription  # prevent unused variable warning
-    
+
     def test_cb(self, msg):
         # publish msg to pc
-        robot_ids = [1,2,3,4,5]
+        robot_ids = [1, 2, 3, 4, 5]
         probas = [0.6, 0.85, 0.9, 0.85, 0.9]
         predicted_classes = [0, 0, 0, 1, 1]
         time_stamp = 1641450318.272768
 
         for i in range(1, 6):
-            _i = i-1
+            _i = i - 1
             result_msg = PredictedDovResult()
             result_msg.proba = probas[_i]
             result_msg.predicted_class = predicted_classes[_i]
@@ -64,7 +64,6 @@ class Robot(Node):
             self.publisher_.publish(result_msg)
             self.get_logger().info(
                 '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
-
 
     def main_cb(self, msg):
         # recording
