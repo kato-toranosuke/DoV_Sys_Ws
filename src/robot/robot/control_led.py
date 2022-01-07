@@ -26,7 +26,7 @@ class ControlLed(Node):
             pixel_ring.set_color(0xFF0000)
             time.sleep(3)
         else:
-            pixel_ring.set_color(0x00FF00)
+            pixel_ring.set_color(0x0000FF)
             time.sleep(3)
         pixel_ring.off()
         time.sleep(3)
