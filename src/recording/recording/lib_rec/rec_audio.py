@@ -6,7 +6,7 @@ import numpy as np
 from .load_constants import Rec_Consts
 from .output_wav import outputWaveFiles, outputWaveFilesForTest, outputWaveFilesForService
 
-def recording(consts: Rec_Consts, **kwargs) -> str:
+def recording(consts: Rec_Consts, mode='production', **kwargs) -> str:
     '''
     単純なレコーディングを行う関数
 
@@ -50,8 +50,13 @@ def recording(consts: Rec_Consts, **kwargs) -> str:
         p.terminate()
 
         # wavファイルに出力
-        file_path = outputWaveFilesForService(
-            consts, frames, p, kwargs['dirname'])
+        if mode == 'test':
+            file_path = outputWaveFilesForTest(
+                consts, frames, p, kwargs['distance'], kwargs['angle'], kwargs['trial'], kwargs['date'])
+        else:
+            file_path = outputWaveFilesForService(
+                consts, frames, p, kwargs['dirname'])
+
         return file_path
     except:
         raise Exception('Failed to record audio.')

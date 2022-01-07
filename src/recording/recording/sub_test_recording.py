@@ -26,7 +26,7 @@ class RecordingSubscriber(Node):
         # self.get_logger().info('I heard: flag = %s, distance = %d, angle = %d, trial = %d, date = %s' %
         #                        (msg.flag, msg.distance, msg.angle, msg.trial, msg.date))
         if msg.flag == True:
-            rec_audio.recording(self.consts, distance=msg.distance,
+            rec_audio.recording(self.consts, mode='test', distance=msg.distance,
                                 angle=msg.angle, trial=msg.trial, date=msg.date)
 
 
