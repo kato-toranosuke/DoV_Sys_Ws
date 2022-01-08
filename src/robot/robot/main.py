@@ -78,7 +78,7 @@ class Robot(Node):
 
     def main_cb(self, msg):
         # recording
-        wav_dir_path = self.rec_wav(msg.dir_name, self.get_logger())
+        wav_dir_path = self.rec_wav(msg.dir_name)
         # calculate features
         features_array = self.calc_features(wav_dir_path, self.filename_prefix)
         # predict dov
@@ -99,17 +99,19 @@ class Robot(Node):
         # publish msg to pc
         result_msg = PredictedDovResult()
         result_msg.proba = proba
-        result_msg.predicted_class = predicted_class
+        result_msg.predicted_class = int(predicted_class)
         result_msg.robot_id = self.robot_id
         result_msg.time_stamp = msg.time_stamp
         self.publisher_.publish(result_msg)
         self.get_logger().info(
             '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
 
-    def rec_wav(self, dir_name, logger):
+    def rec_wav(self, dir_name):
         try:
+            self.get_logger().info('* Start Recording')
             wav_dir_path = rec_audio.recording(
-                self.consts, logger, dirname=dir_name)
+                self.consts, dirname=dir_name)
+            self.get_logger().info('* Stop Recording')
         except Exception as e:
             self.get_logger().error(e)
         else:
@@ -216,25 +218,31 @@ class Robot(Node):
             self.get_logger().info('Complete to calculate GCC-PHAT & TDOA')
 
             # 行情報を生成
-            feature_vals = features + gp_tdoa_features
+            feature_val = features + gp_tdoa_features
         except Exception as e:
-            self.get_logger().error(e)
+            self.get_logger().error(repr(e))
         else:
             self.get_logger().info('Success to calcurate feature values from a wav file.')
-            return feature_vals
+            return feature_val
 
-    def dov_predict(self, feature_vals, pkl_filepath):
+    def dov_predict(self, feature_val, pkl_filepath):
         try:
             # モデルの読み込み
             model = joblib.load(pkl_filepath)
 
             # classの予測
-            predicted_class = model.predict(feature_vals)
-            proba = model.predict_proba(feature_vals)
+            feature_val_2d_array = [feature_val]
+            predicted_result = model.predict(feature_val_2d_array)
+            predicted_class = predicted_result[0]
+            proba_result = model.predict_proba(feature_val_2d_array)
+            proba = proba_result[0][predicted_class]
         except Exception as e:
-            self.get_logger().error(e)
+            self.get_logger().error(repr(e))
         else:
             self.get_logger().info('Success to predict dov.')
+            # print(f"predicted_class: {predicted_class}, proba: {proba}")
+            # print(predicted_result)
+            # print(proba_result)
             return predicted_class, proba
 
 
