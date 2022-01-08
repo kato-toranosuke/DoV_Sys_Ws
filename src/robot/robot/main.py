@@ -160,6 +160,8 @@ class Robot(Node):
             # 特徴量を得る
             features = ff.FetchFeaturesFromMonoData(v, fs, N, overlap, w=w)
 
+            self.get_logger().info('Complete to calculate features except GCC-PHAT & TDOA')
+
             #######################
             ### GCC-PHAT & TDOA ###
             #######################
@@ -210,6 +212,8 @@ class Robot(Node):
                 mean = np.mean(vals)
 
                 gp_tdoa_features.extend([std, r, min, max, mean])
+
+            self.get_logger().info('Complete to calculate GCC-PHAT & TDOA')
 
             # 行情報を生成
             feature_vals = features + gp_tdoa_features
