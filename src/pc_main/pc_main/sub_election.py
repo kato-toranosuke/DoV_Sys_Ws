@@ -35,6 +35,10 @@ class ElectionSubscriber(Node):
         cur_time_stamp_array = [
             i for i in self.received_msgs if i['time_stamp'] == msg.time_stamp]
 
+        print(len(cur_time_stamp_array))
+        print(cur_time_stamp_array)
+        print('\n')
+
         if len(cur_time_stamp_array) == n_robot:
             # select robot
             if elect_mode == '0angle':
@@ -60,7 +64,7 @@ class ElectionSubscriber(Node):
         if len(class_one_results) > 0:
             max_proba_result = max(class_one_results, key=lambda x: x[key])
         else:
-            max_proba_result = {'robot_id': 404}
+            max_proba_result = {'robot_id': 100}
 
         pprint.pprint(array)
         print('\n')
@@ -83,7 +87,7 @@ class ElectionSubscriber(Node):
             elif class_one_results[0]['robot_id'] == 4 and class_one_results[1]['robot_id'] == 5:
                 max_proba_result = class_one_results[1]
             else:
-                max_proba_result = {'robot_id': 404}
+                max_proba_result = {'robot_id': 100}
         elif len(class_one_results) == 3:
             if class_one_results[0]['robot_id'] == 1 and class_one_results[1]['robot_id'] == 2 and class_one_results[2]['robot_id'] == 3:
                 max_proba_result = class_one_results[1]
@@ -92,9 +96,9 @@ class ElectionSubscriber(Node):
             elif class_one_results[0]['robot_id'] == 3 and class_one_results[1]['robot_id'] == 4 and class_one_results[2]['robot_id'] == 5:
                 max_proba_result = class_one_results[1]
             else:
-                max_proba_result = {'robot_id': 404}
+                max_proba_result = {'robot_id': 100}
         else:
-            max_proba_result = {'robot_id': 404}
+            max_proba_result = {'robot_id': 100}
 
         pprint.pprint(array)
         print('\n')
