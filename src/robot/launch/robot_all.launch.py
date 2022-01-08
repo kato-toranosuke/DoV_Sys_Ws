@@ -14,19 +14,19 @@ def generate_launch_description():
             package='robot',
             # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='robot_main',
-            # name=['robot', LaunchConfiguration('robot_id'), '_robot_main']
+            name=['robot', LaunchConfiguration('robot_id'), '_robot_main']
         ),
         Node(
             package='robot',
             # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='control_led',
-            # name=['robot', LaunchConfiguration('robot_id'), '_control_led']
+            name=['robot', LaunchConfiguration('robot_id'), '_control_led']
         ),
         Node(
             package='recording',
             # namespace=['robot', LaunchConfiguration('robot_id')],
             executable='sub_set_mic_param',
-            # name=['robot', LaunchConfiguration(
-            #     'robot_id'), '_sub_set_mic_param']
+            name=['robot', LaunchConfiguration(
+                'robot_id'), '_sub_set_mic_param']
         ),
     ])
