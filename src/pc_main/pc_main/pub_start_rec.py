@@ -17,9 +17,12 @@ class StartRecTopic(Node):
 
     def keyboard_daemon(self):
         while True:
-            key = input('Key Input: ')
-            if key == 's':
-                self.pub_msg_cb()
+            try:
+                key = input('Key Input: ')
+                if key == 's':
+                    self.pub_msg_cb()
+            except KeyboardInterrupt:
+                break
 
     def pub_msg_cb(self):
         msg = StartRec()
