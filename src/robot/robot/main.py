@@ -34,7 +34,7 @@ class Robot(Node):
         self.overlap = 80
         self.gp_tdoa_mic_channels = [1, 2, 3, 4]
 
-        self.pkl_filepath = '/home/ubuntu/DoV_Sys_Ws/pkl/NoAGC-0angle-under5m_2021-12-27_ExtraTreesClassifier_RandomOverSampler_2021-12-29_no3.sav'
+        self.pkl_dir = '/home/ubuntu/DoV_Sys_Ws/pkl'
 
         self.robot_id = int(os.environ['ROBOT_ID'])
 
@@ -43,9 +43,20 @@ class Robot(Node):
         self.subscription = self.create_subscription(
             StartRec,
             'start_rec_topic',
-            self.test_cb,
+            self.main_cb,
             10)
         self.subscription  # prevent unused variable warning
+
+        self.declare_parameter('elect_mode', '0angle')
+        self.declare_parameter('agc_mode', 'noagc')
+        self.declare_parameter(
+            'agc_0angle_pkl_filename', 'AGC-0angle-under5m_2021-12-27_ExtraTreesClassifier_ClusterCentroids_2021-12-28_no8.sav')
+        self.declare_parameter(
+            'agc_45angle_pkl_filename', 'AGC-45angle-under5m_2021-12-27_ExtraTreesClassifier_SMOTE_2021-12-29_no4.sav')
+        self.declare_parameter(
+            'noagc_0angle_pkl_filename', 'NoAGC-0angle-under5m_2021-12-27_ExtraTreesClassifier_RandomOverSampler_2021-12-29_no3.sav')
+        self.declare_parameter('noagc_45angle_pkl_filename',
+                               'NoAGC-45angle-under5m_2021-12-27_ExtraTreesClassifier_NoResampler_2021-12-29_no0.sav')
 
     def test_cb(self, msg):
         # publish msg to pc
@@ -67,12 +78,23 @@ class Robot(Node):
 
     def main_cb(self, msg):
         # recording
-        wav_dir_path = self.rec_wav(msg.dir_name)
+        wav_dir_path = self.rec_wav(msg.dir_name, self.get_logger())
         # calculate features
         features_array = self.calc_features(wav_dir_path, self.filename_prefix)
         # predict dov
+        elect_mode = self.get_parameter(
+            'elect_mode').get_parameter_value().string_value
+        agc_mode = self.get_parameter(
+            'agc_mode').get_parameter_value().string_value
+        pkl_param_name = agc_mode + '_' + elect_mode + '_pkl_filename'
+        pkl_filepath = self.pkl_dir + '/' + \
+            self.get_parameter(
+                pkl_param_name).get_parameter_value().string_value
+        self.get_logger().info(
+            f"elect_mode: {elect_mode}, agc_mode: {agc_mode}, pkl_filepath: {pkl_filepath}")
+        # predict
         predicted_class, proba = self.dov_predict(
-            features_array, self.pkl_filepath)
+            features_array, pkl_filepath)
 
         # publish msg to pc
         result_msg = PredictedDovResult()
@@ -84,9 +106,10 @@ class Robot(Node):
         self.get_logger().info(
             '[Publishing] robot_id: %d, proba: %lf, predicted_class: %d' % (result_msg.robot_id, result_msg.proba, result_msg.predicted_class))
 
-    def rec_wav(self, dir_name):
+    def rec_wav(self, dir_name, logger):
         try:
-            wav_dir_path = rec_audio.recording(self.consts, dirname=dir_name)
+            wav_dir_path = rec_audio.recording(
+                self.consts, logger, dirname=dir_name)
         except Exception as e:
             self.get_logger().error(e)
         else:
