@@ -146,7 +146,7 @@ def outputWaveFilesForTest(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio,
         outputWaveFile(
             output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE)
 
-def outputWaveFilesForService(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio, dirname: str) -> str:
+def outputWaveFilesForService(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio, dirname: str, logger) -> str:
     '''
     同一ディレクトリにチャンネル毎のwavファイルを出力する。
 
@@ -165,13 +165,13 @@ def outputWaveFilesForService(consts: Rec_Consts, frames: List, p: pyaudio.PyAud
         for i in range(consts.RESPEAKER_CHANNELS):
             output_file_path = output_dir_path + '/rec_' + str(i) + '.wav'
             outputWaveFile(
-                output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE)
+                output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE, logger)
         return output_dir_path
     except:
         raise Exception('Failed to save wav files.')
 
 
-def outputWaveFiles(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio):
+def outputWaveFiles(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio, logger):
     '''
     同一ディレクトリにチャンネル毎のwavファイルを出力する。
 
@@ -189,10 +189,10 @@ def outputWaveFiles(consts: Rec_Consts, frames: List, p: pyaudio.PyAudio):
     for i in range(consts.RESPEAKER_CHANNELS):
         output_file_path = output_dir_path + '/rec_' + str(i) + '.wav'
         outputWaveFile(
-            output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE)
+            output_file_path, frames[i], p, consts.RESPEAKER_WIDTH, consts.RESPEAKER_RATE, logger)
 
 
-def outputWaveFile(file_path: str, frame: List, p: pyaudio.PyAudio, width: int, fs: int) -> None:
+def outputWaveFile(file_path: str, frame: List, p: pyaudio.PyAudio, width: int, fs: int, logger) -> None:
     '''
     音声データをwavファイルを出力する。
 
@@ -214,6 +214,6 @@ def outputWaveFile(file_path: str, frame: List, p: pyaudio.PyAudio, width: int, 
     except:
         raise Exception(f'Failed to write audio file.: {file_path}')
     else:
-        print(f'Success to write audio file.: {file_path}')
+        logger.info(f'Success to write audio file.: {file_path}')
     finally:
         wf.close()

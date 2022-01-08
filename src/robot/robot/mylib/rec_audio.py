@@ -6,7 +6,7 @@ import numpy as np
 from .load_constants import Rec_Consts
 from .output_wav import outputWaveFiles, outputWaveFilesForTest, outputWaveFilesForService
 
-def recording(consts: Rec_Consts, **kwargs) -> str:
+def recording(consts: Rec_Consts, logger, **kwargs) -> str:
     '''
     単純なレコーディングを行う関数
 
@@ -29,7 +29,7 @@ def recording(consts: Rec_Consts, **kwargs) -> str:
             input_device_index=consts.RESPEAKER_INDEX,
             frames_per_buffer=consts.CHUNK)
 
-        print("* recording")
+        logger.info("* recording")
 
         # # 音声データを格納する二次元配列
         frames = [[] for i in range(consts.RESPEAKER_CHANNELS)]
@@ -43,7 +43,7 @@ def recording(consts: Rec_Consts, **kwargs) -> str:
                     j::consts.RESPEAKER_CHANNELS]
                 frames[j].append(ch_data.tobytes())
 
-        print("* done recording")
+        logger.info("* done recording")
 
         stream.stop_stream()
         stream.close()
@@ -51,7 +51,7 @@ def recording(consts: Rec_Consts, **kwargs) -> str:
 
         # wavファイルに出力
         file_path = outputWaveFilesForService(
-            consts, frames, p, kwargs['dirname'])
+            consts, frames, p, kwargs['dirname'], logger)
         return file_path
     except:
         raise Exception('Failed to record audio.')
