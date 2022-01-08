@@ -24,8 +24,16 @@ class ControlLed(Node):
         pixel_ring = ring.find()
         if msg.data == self.robot_id:
             pixel_ring.set_color(0xFF0000)
+            time.sleep(1)
+            pixel_ring.set_color(0xFF0000)
+            time.sleep(1)
+            pixel_ring.set_color(0xFF0000)
             time.sleep(3)
         else:
+            pixel_ring.set_color(0x0000FF)
+            time.sleep(1)
+            pixel_ring.set_color(0x0000FF)
+            time.sleep(1)
             pixel_ring.set_color(0x0000FF)
             time.sleep(3)
         pixel_ring.off()
