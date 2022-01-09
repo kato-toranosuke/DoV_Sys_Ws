@@ -19,7 +19,7 @@ class ElectionSubscriber(Node):
             100)
         self.received_msgs = []
         self.declare_parameter('n_robot', 5)
-        self.declare_parameter('elect_mode', '0angle')
+        self.declare_parameter('elect_mode', '45angle')
 
     def collect_result_cb(self, msg):
         n_robot = self.get_parameter(
@@ -35,7 +35,7 @@ class ElectionSubscriber(Node):
         cur_time_stamp_array = [
             i for i in self.received_msgs if i['time_stamp'] == msg.time_stamp]
 
-        print(len(cur_time_stamp_array))
+        print(f'length of ur_time_stamp_array: {len(cur_time_stamp_array)}')
         print(cur_time_stamp_array)
         print('\n')
 

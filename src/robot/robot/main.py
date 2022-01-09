@@ -47,8 +47,8 @@ class Robot(Node):
             10)
         self.subscription  # prevent unused variable warning
 
-        self.declare_parameter('elect_mode', '0angle')
-        self.declare_parameter('agc_mode', 'noagc')
+        self.declare_parameter('elect_mode', '45angle')
+        self.declare_parameter('agc_mode', 'agc')
         self.declare_parameter(
             'agc_0angle_pkl_filename', 'AGC-0angle-under5m_2021-12-27_ExtraTreesClassifier_ClusterCentroids_2021-12-28_no8.sav')
         self.declare_parameter(
