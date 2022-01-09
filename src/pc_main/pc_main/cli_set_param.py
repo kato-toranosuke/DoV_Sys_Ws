@@ -50,7 +50,6 @@ class SetParams():
                     except Exception as e:
                         client.get_logger().info('Service call failed %r' % (e,))
                     else:
-                        print('ok')
                         request = client.req.parameters[0]
                         client.get_logger().info(
                             'Result: [sub_election_node] key=%s, value=%s --> success=%s, reason=%s' %
@@ -72,7 +71,6 @@ class SetParams():
                     except Exception as e:
                         client.get_logger().info('Service call failed %r' % (e,))
                     else:
-                        print('ok')
                         request = client.req.parameters[0]
                         client.get_logger().info(
                             'Result: [robot%d] key=%s, value=%s --> success=%s, reason=%s' %

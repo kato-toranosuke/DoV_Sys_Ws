@@ -50,9 +50,9 @@ class Robot(Node):
         self.declare_parameter('elect_mode', '45angle')
         self.declare_parameter('agc_mode', 'agc')
         self.declare_parameter(
-            'agc_0angle_pkl_filename', 'AGC-0angle-under5m_2021-12-27_ExtraTreesClassifier_ClusterCentroids_2021-12-28_no8.sav')
+            'agc_0angle_pkl_filename', '2022-01-07/AGC-0angle-under5m_2022-01-07_ExtraTreesClassifier_RandomUnderSampler_2022-01-09_no2.sav')
         self.declare_parameter(
-            'agc_45angle_pkl_filename', 'AGC-45angle-under5m_2021-12-27_ExtraTreesClassifier_SMOTE_2021-12-29_no4.sav')
+            'agc_45angle_pkl_filename', '2022-01-07/AGC-45angle-under5m_2022-01-07_ExtraTreesClassifier_NoResampler_2022-01-09_no0.sav')
         self.declare_parameter(
             'noagc_0angle_pkl_filename', 'NoAGC-0angle-under5m_2021-12-27_ExtraTreesClassifier_RandomOverSampler_2021-12-29_no3.sav')
         self.declare_parameter('noagc_45angle_pkl_filename',
