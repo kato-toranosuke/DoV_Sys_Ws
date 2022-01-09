@@ -27,7 +27,8 @@ setup(
     entry_points={
         'console_scripts': [
             'sub_election = pc_main.sub_election:main',
-            'pub_start_rec = pc_main.pub_start_rec:main'
+            'pub_start_rec = pc_main.pub_start_rec:main',
+            'cli_set_param = pc_main.cli_set_param:main'
         ],
     },
 )
