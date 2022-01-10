@@ -76,7 +76,8 @@ class ElectionSubscriber(Node):
         # extraction class 1
         class_one_results = [i for i in array if i['predicted_class'] == 1]
         # sort by robot_id
-        sorted(class_one_results, key=lambda x: x['robot_id'])
+        class_one_results = sorted(
+            class_one_results, key=lambda x: x['robot_id'])
 
         # 場合分け
         if len(class_one_results) == 1:
